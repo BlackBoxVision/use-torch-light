@@ -1,6 +1,6 @@
 # UseTorchLight [![npm version](https://badge.fury.io/js/%40blackbox-vision%2Fuse-torch-light.svg)](https://badge.fury.io/js/%40blackbox-vision%2Fuse-torch-light) [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT) [![Known Vulnerabilities](https://snyk.io/test/github/blackboxvision/use-torch-light/badge.svg)](https://snyk.io/test/github/blackboxvision/use-torch-light)
 
-🔦 **useTorchLight** is a hook to enable/disable camera flash.
+🔦 **useTorchLight** is a hook to enable/disable camera flash. Check out the [demo](Demo: https://zittu.csb.app).
 
 ## Install
 
@@ -23,16 +23,16 @@ yarn add @blackbox-vision/use-torch-light
 The usage is really simple:
 
 ```javascript
-import React, { useState, useRef } from "react";
-import { QrReader } from "@blackbox-vision/react-qr-reader";
-import { useTorchLight } from "@blackbox-vision/use-torch-light";
+import React, { useState, useRef } from 'react';
+import { QrReader } from '@blackbox-vision/react-qr-reader';
+import { useTorchLight } from '@blackbox-vision/use-torch-light';
 
-const Test = props => {
+const Test = (props) => {
   const streamRef = useRef(null);
 
   const [error, setError] = useState(null);
-  const [data, setData] = useState("No result");
-  
+  const [data, setData] = useState('No result');
+
   const [on, toggle] = useTorchLight(streamRef.current);
 
   const setRef = ({ stream }) => {
@@ -45,9 +45,9 @@ const Test = props => {
         onLoad={setRef}
         onScan={setData}
         onError={setError}
-        style={{ width: "100%" }}
+        style={{ width: '100%' }}
       />
-      <button onClick={toggle}>{on ? "Disable Torch" : "Enable Torch"}</button>
+      <button onClick={toggle}>{on ? 'Disable Torch' : 'Enable Torch'}</button>
       <p>{JSON.stringify(data, null, 2)}</p>
       <p>{JSON.stringify(error, null, 2)}</p>
     </>
