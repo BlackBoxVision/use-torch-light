@@ -1,0 +1,99 @@
+{
+  "name": "@blackbox-vision/use-torch-light",
+  "version": "0.0.1",
+  "description": "A hook to enable/disable camera flash",
+  "scripts": {
+    "analyze": "source-map-explorer pkg/**/*.js pkg/**/*.js.map",
+    "clean": "rimraf pkg",
+    "build": "npm run clean && pika build",
+    "lint": "eslint --fix 'src/**'",
+    "publish": "pika publish",
+    "version": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BlackBoxVision/use-torch-light.git"
+  },
+  "keywords": [
+    "react",
+    "torch",
+    "torchlight",
+    "react-hooks"
+  ],
+  "author": "Jonatan Salas <jonatan.salas@blackbox-vision.tech>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BlackBoxVision/use-torch-light/issues"
+  },
+  "homepage": "https://github.com/BlackBoxVision/use-torch-light#readme",
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-proposal-object-rest-spread": "^7.9.0",
+    "@babel/plugin-proposal-optional-chaining": "^7.9.0",
+    "@babel/preset-react": "^7.9.1",
+    "@babel/preset-typescript": "^7.9.0",
+    "@commitlint/cli": "^8.3.5",
+    "@commitlint/config-conventional": "^8.3.4",
+    "@pika/pack": "^0.5.0",
+    "@pika/plugin-build-node": "^0.9.2",
+    "@pika/plugin-build-types": "^0.9.2",
+    "@pika/plugin-build-web": "^0.9.2",
+    "@pika/plugin-standard-pkg": "^0.9.2",
+    "@types/react": "^16.9.25",
+    "@types/w3c-image-capture": "^1.0.2",
+    "@typescript-eslint/eslint-plugin": "^2.24.0",
+    "@typescript-eslint/parser": "^2.24.0",
+    "babel-eslint": "^10.1.0",
+    "babel-loader": "^8.1.0",
+    "eslint": "^6.8.0",
+    "eslint-config-react-app": "^5.2.1",
+    "eslint-plugin-flowtype": "^4.6.0",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.19.0",
+    "eslint-plugin-react-hooks": "^2.5.1",
+    "husky": "^4.2.3",
+    "lint-staged": "^10.0.8",
+    "prettier": "^2.0.0",
+    "react": "^16.13.1",
+    "react-docgen-typescript-loader": "^3.7.1",
+    "react-dom": "^16.13.1",
+    "source-map-explorer": "^2.4.1",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.8.3"
+  },
+  "peerDependencies": {
+    "react": "~16",
+    "react-dom": "~16"
+  },
+  "dependencies": {},
+  "@pika/pack": {
+    "pipeline": [
+      [
+        "@pika/plugin-standard-pkg"
+      ],
+      [
+        "@pika/plugin-build-node"
+      ],
+      [
+        "@pika/plugin-build-web"
+      ],
+      [
+        "@pika/plugin-build-types"
+      ]
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,json,css,md,scss}": [
+      "prettier --write",
+      "git add"
+    ]
+  }
+}
