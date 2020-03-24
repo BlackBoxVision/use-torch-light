@@ -1,6 +1,6 @@
 # UseTorchLight [![npm version](https://badge.fury.io/js/%40blackbox-vision%2Fuse-torch-light.svg)](https://badge.fury.io/js/%40blackbox-vision%2Fuse-torch-light) [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT) [![Known Vulnerabilities](https://snyk.io/test/github/blackboxvision/use-torch-light/badge.svg)](https://snyk.io/test/github/blackboxvision/use-torch-light)
 
-🔦 **useTorchLight** is a hook to enable/disable camera flash. Check out the [demo](Demo: https://zittu.csb.app).
+🔦 **useTorchLight** is a hook to enable/disable camera flash. Check out the [demo](https://zittu.csb.app).
 
 ## Install
 
