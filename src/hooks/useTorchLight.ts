@@ -1,6 +1,6 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback } from 'react';
 
-import { log } from "../helpers/utils";
+import { log, isFunction } from '../helpers/utils';
 
 export type UseTorchLightHook = (
   /**
@@ -23,16 +23,35 @@ export type UseTorchLightHookOptions = {
    * Quantify vibration when flash is on and off
    */
   vibrate: number;
+  /**
+   * Error callback, gets fired if applying media constraints results in error
+   */
+  onError?: (err: Error) => void;
+  /**
+   * Success callback, gets fired if applying media constraints results successfully
+   */
+  onSuccess?: (props: UseTorchLightHookOnSuccessProps) => void;
+};
+
+export type UseTorchLightHookOnSuccessProps = {
+  on?: boolean;
+  stream?: MediaStream;
+  track?: MediaStreamTrack;
 };
 
 const defaultOptions: UseTorchLightHookOptions = {
   debug: false,
-  vibrate: 70
+  vibrate: 70,
 };
 
 export const useTorchLight: UseTorchLightHook = (
   stream: MediaStream | any,
-  { debug, vibrate }: UseTorchLightHookOptions = defaultOptions
+  {
+    debug,
+    vibrate,
+    onError,
+    onSuccess,
+  }: UseTorchLightHookOptions = defaultOptions
 ): UseTorchLightHookReturnType => {
   const [on, setOn] = useState(false);
 
@@ -49,21 +68,33 @@ export const useTorchLight: UseTorchLightHook = (
             const imageCapture = new ImageCapture(track);
             const capabilities = await imageCapture.getPhotoCapabilities();
 
-            if (capabilities.fillLightMode.includes("flash")) {
+            if (capabilities.fillLightMode.includes('flash')) {
               await track.applyConstraints({
-                advanced: [{ torch: true } as any]
+                advanced: [{ torch: true } as any],
               });
+
+              if (isFunction(onSuccess)) {
+                onSuccess({ track, on });
+              }
             }
           } catch (err) {
-            log(`[UseTorchLight]: error ${err.message}`, "red", { debug });
+            log(`[UseTorchLight]: error ${err.message}`, 'red', { debug });
 
             // If errored, we can go to fallback forcing to apply the constraints
             try {
               await track.applyConstraints({
-                advanced: [{ torch: true } as any]
+                advanced: [{ torch: true } as any],
               });
             } catch (err) {
-              log(`[UseTorchLight]: error ${err.message}`, "red", { debug });
+              log(`[UseTorchLight]: error ${err.message}`, 'red', { debug });
+
+              if (isFunction(onError)) {
+                onError(err);
+              }
+            }
+
+            if (isFunction(onError)) {
+              onError(err);
             }
           }
 
@@ -71,44 +102,58 @@ export const useTorchLight: UseTorchLightHook = (
         }
       }
     } catch (err) {
-      log(`[UseTorchLight]: error ${err.message}`, "red", { debug });
+      log(`[UseTorchLight]: error ${err.message}`, 'red', { debug });
     }
   }, [stream, vibrate, debug]);
 
   const turnOff = useCallback(async () => {
-    if (on) {
-      window.navigator.vibrate([vibrate]);
+    window.navigator.vibrate([vibrate]);
 
-      if (stream) {
-        const pc: any = new RTCPeerConnection();
+    if (stream) {
+      const pc: RTCPeerConnection | any = new RTCPeerConnection();
 
-        // Older way for browsers
-        if ("applyConstraints" in stream) {
-          try {
-            await stream?.applyConstraints({
-              advanced: [{ torch: false } as any]
-            });
+      // Older way for browsers
+      if ('applyConstraints' in stream) {
+        try {
+          await stream?.applyConstraints({
+            advanced: [{ torch: false } as any],
+          });
 
-            if ("addStream" in pc) {
-              pc?.addStream(stream);
-            }
-          } catch (err) {
-            log(`[UseTorchLight]: error ${err.message}`, "red", { debug });
+          if ('addStream' in pc) {
+            pc?.addStream(stream);
           }
 
-          // New way for modern browsers
-        } else {
-          const tracks = stream.getTracks();
+          if (isFunction(onSuccess)) {
+            onSuccess({ stream, on });
+          }
+        } catch (err) {
+          log(`[UseTorchLight]: error ${err.message}`, 'red', { debug });
 
-          for (let track of tracks) {
-            try {
-              await track.applyConstraints({
-                advanced: [{ torch: false } as any]
-              });
+          if (isFunction(onError)) {
+            onError(err);
+          }
+        }
 
-              pc.addTrack(track, stream);
-            } catch (err) {
-              log(`[UseTorchLight]: error ${err.message}`, "red", { debug });
+        // New way for modern browsers
+      } else {
+        const tracks: MediaStreamTrack[] = stream.getTracks();
+
+        for (let track of tracks) {
+          try {
+            await track.applyConstraints({
+              advanced: [{ torch: false } as any],
+            });
+
+            pc.addTrack(track, stream);
+
+            if (isFunction(onSuccess)) {
+              onSuccess({ track, on });
+            }
+          } catch (err) {
+            log(`[UseTorchLight]: error ${err.message}`, 'red', { debug });
+
+            if (isFunction(onError)) {
+              onError(err);
             }
           }
         }
@@ -116,7 +161,7 @@ export const useTorchLight: UseTorchLightHook = (
 
       setOn(false);
     }
-  }, [on, stream, vibrate, debug]);
+  }, [stream, vibrate, debug]);
 
   return [on, on ? turnOff : turnOn];
 };
