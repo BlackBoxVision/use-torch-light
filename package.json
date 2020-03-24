@@ -1,6 +1,6 @@
 {
   "name": "@blackbox-vision/use-torch-light",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A hook to enable/disable camera flash",
   "scripts": {
     "analyze": "source-map-explorer pkg/**/*.js pkg/**/*.js.map",
