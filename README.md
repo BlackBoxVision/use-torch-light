@@ -55,34 +55,6 @@ const Test = props => {
 };
 ```
 
-## Props
-
-### Events
-
-| Prop    | Argument | Description                                                                                                                                             |
-| ------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| onScan  | `result` | Scan event handler. Called every scan with the decoded value or `null` if no QR code was found.                                                         |
-| onError | `Error`  | Called when an error occurs.                                                                                                                            |
-| onLoad  | `object` | Called when the component is ready for use. Object properties are `stream`: [MediaStream](https://developer.mozilla.org/en-US/docs/Web/API/MediaStream) |
-
-### Options
-
-| Prop           | Type                    | Default       | Description                                                                                                                                                       |
-| -------------- | ----------------------- | ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| facingMode     | `user` or `environment` | `environment` | Specify which camera should be used (if available).                                                                                                               |
-| resolution     | number                  | `600`         | The resolution of the video (or image in legacyMode). Larger resolution will increase the accuracy but it will also slow down the processing time.                |
-| style          | a valid React style     | none          | Styling for the container element. **Warning** The preview will always keep its 1:1 aspect ratio.                                                                 |
-| className      | string                  | none          | ClassName for the container element.                                                                                                                              |
-| showViewFinder | boolean                 | `true`        | Show or hide the build in view finder. See demo                                                                                                                   |
-| constraints    | object                  | `null`        | Use custom camera constraints that the override default behavior. [MediaTrackConstraints](https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraints) |
-| debug          | boolean                 | `null`        | Enable debug logs to see what's going on inside the component                                                                                                     |
-
-## Tested platforms
-
-- Chrome Mac OS & Android
-- Firefox Mac OS & Android
-- Safari Mac OS & IOS
-
 ## Issues
 
 Please, open an [issue](https://github.com/BlackBoxVision/use-torch-light/issues) following one of the issues templates. We will do our best to fix them.
