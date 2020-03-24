@@ -18,6 +18,12 @@ npm i @blackbox-vision/use-torch-light
 yarn add @blackbox-vision/use-torch-light
 ```
 
+## Warning
+
+**useTorchLight** relies on [ImageCapture API](https://developer.mozilla.org/en-US/docs/Web/API/ImageCapture) whose spec isn't complete at all browsers currently. You can check the state of ImageCapture in browsers [here](https://caniuse.com/#search=imagecapture).
+
+We're currently trying to make the hook most consistent as possible by providing cross-browser checks and dispatching errors or alerts via success and error callbacks.
+
 ## Usage
 
 The usage is really simple:
